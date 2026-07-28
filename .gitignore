@@ -1,0 +1,10 @@
+# Secrets — never commit. These live in Vercel's Environment Variables instead.
+.env
+.env.*
+*.local
+
+# Dependencies / build output
+node_modules/
+.vercel/
+dist/
+.DS_Store

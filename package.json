@@ -1,0 +1,7 @@
+{
+  "name": "coast-edge-electrical",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Coast Edge Electrical landing page (static site + serverless functions for live Google reviews and contact-form email via Resend).",
+  "type": "module"
+}
