@@ -213,7 +213,7 @@ h6.kicker {
   padding-bottom: 12px;
 }
 .site-nav .logo { margin-right: auto; display: block; }
-.site-nav .logo img { height: 68px; width: auto; }
+.site-nav .logo img { height: 46px; width: auto; }
 .nav-links { display: flex; align-items: center; gap: 26px; }
 .navlink {
   color: var(--color-neutral-300);
@@ -593,7 +593,7 @@ textarea.input { min-height: 96px; resize: vertical; }
   justify-content: space-between;
 }
 .footer-brand { display: flex; align-items: center; gap: 14px; }
-.footer-brand img { height: 56px; width: auto; }
+.footer-brand img { height: 38px; width: auto; }
 .footer-brand div { font-size: 13px; color: var(--color-neutral-400); line-height: 1.5; }
 .footer-copy { font-size: 13px; color: var(--color-neutral-400); }
 
@@ -607,6 +607,8 @@ textarea.input { min-height: 96px; resize: vertical; }
 @media (max-width: 860px) {
   .nav-links { display: none; }
   .hero { min-height: clamp(480px, calc(100dvh - 88px), 780px); }
+  /* Portrait crop: shift off the electrician's head to the switchboard/work */
+  .hero-bg { background-position: 44% center; }
   .hero h1 { font-size: 52px; }
   .contact-panel { grid-template-columns: 1fr; gap: 32px; padding: 28px; }
 }
