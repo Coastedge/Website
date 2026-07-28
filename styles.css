@@ -607,8 +607,8 @@ textarea.input { min-height: 96px; resize: vertical; }
 @media (max-width: 860px) {
   .nav-links { display: none; }
   .hero { min-height: clamp(480px, calc(100dvh - 88px), 780px); }
-  /* Portrait crop: shift off the electrician's head to the switchboard/work */
-  .hero-bg { background-position: 44% center; }
+  /* Portrait crop: show the electrician working, without a head-only close-up */
+  .hero-bg { background-position: 56% center; }
   .hero h1 { font-size: 52px; }
   .contact-panel { grid-template-columns: 1fr; gap: 32px; padding: 28px; }
 }
