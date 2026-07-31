@@ -15,16 +15,18 @@
     *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%;margin:0}
     body{font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;color:#fff;background:#08183f;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-    .ev{min-height:100vh;min-height:100dvh;position:relative;display:flex;align-items:stretch}
+    .ev{min-height:100vh;min-height:100dvh;position:relative;display:flex;flex-direction:column}
     .ev::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 130% at 88% 18%,#2f8fdd 0%,#174a8f 40%,#0c2a6b 74%,#08183f 100%)}
-    .ev-inner{position:relative;z-index:2;width:100%;max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:40px;padding:32px 32px}
+    .ev-main{flex:1;position:relative;z-index:2;display:flex;align-items:center}
+    .ev-inner{width:100%;max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:40px;padding:32px 32px}
+    .ev-foot{display:flex;align-items:center;justify-content:center;gap:7px;position:relative;z-index:2;text-align:center;padding:0 20px 18px;font-size:13.5px;color:rgba(255,255,255,.74);text-decoration:none}
+    .ev-foot .ico{font-size:16px;color:#8fc9fb}
+    .ev-foot:hover{color:#fff}
     .ev-left{flex:1.05;display:flex;flex-direction:column}
     .ev-right{flex:.95;display:flex;align-items:center;justify-content:center}
     .ev-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
     .ev-word{font-weight:600;letter-spacing:.03em;font-size:15px;color:#fff}
     .ev-word b{color:#8fc9fb;font-weight:600}
-    .ev-back{color:rgba(255,255,255,.78);text-decoration:none;font-size:13px;white-space:nowrap;transition:color .15s}
-    .ev-back:hover{color:#8fc9fb}
     .ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
     .ev-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#8fc9fb}
     .ev-eyebrow .ico{font-size:15px}
@@ -72,11 +74,11 @@
 </svg>
 
 <main class="ev">
+  <div class="ev-main">
   <div class="ev-inner">
     <div class="ev-left">
       <div class="ev-top">
         <a href="/" style="text-decoration:none"><span class="ev-word">COAST EDGE <b>ELECTRICAL</b></span></a>
-        <a class="ev-back" href="/">Need something else? &rarr;</a>
       </div>
       <div class="ev-eyebrow"><svg class="ico"><use href="#i-bolt"/></svg>EV charger installation &middot; Sunshine Coast</div>
       <h1>Charge at home,<br>installed right.</h1>
@@ -119,6 +121,8 @@
       </div>
     </div>
   </div>
+  </div>
+  <a class="ev-foot" href="/"><svg class="ico"><use href="#i-bolt"/></svg>Need other electrical work? Visit our main site &rarr;</a>
 </main>
 
 <script>
