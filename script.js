@@ -30,16 +30,19 @@
      DATA
      ---------------------------------------------------------- */
 
-  // ⚠️ PLACEHOLDER reviews — NOT real customers, and NOT shown on the live site.
-  // These only render on localhost (design preview). The public site pulls real
-  // reviews from Google via REVIEWS_ENDPOINT; if none, the section is hidden.
-  var placeholderReviews = [
-    { quote: "Turned up on time, explained everything clearly and left the place spotless. Rare to find these days — wouldn't call anyone else.", name: "Sarah M.", suburb: "Buderim" },
-    { quote: "Sorted our switchboard and added a safety switch same day. Fair price, no fuss, genuinely lovely bloke.", name: "Dave R.", suburb: "Maroochydore" },
-    { quote: "Did our whole solar and battery fit-out. Professional from quote to finish and our bills have dropped right off.", name: "Jenna & Tom", suburb: "Noosa Heads" },
-    { quote: "Josh installed our EV charger and a few new power points. Prompt, tidy and great to deal with — highly recommend.", name: "Michael P.", suburb: "Mooloolaba" },
-    { quote: "Quick response when our power went out at night. Back on within the hour and very reasonably priced.", name: "Lauren K.", suburb: "Caloundra" },
-    { quote: "Fantastic communication from quote to finish. Nothing was too much trouble and the work is faultless.", name: "Greg & Anne", suburb: "Peregian" }
+  // Real Google reviews for Coast Edge Electrical (all 5-star), shown on the live site.
+  // If the Google reviews API is later configured (REVIEWS_ENDPOINT), live data
+  // takes over automatically; otherwise these show. `meta` = the job done.
+  var reviews = [
+    { quote: "Our new downlights, exhaust fan and wall switches look fantastic. Josh was conscientious, methodical and paid close attention to every detail — an absolute pleasure to deal with. Wouldn't hesitate to recommend.", name: "Lindsey Hebell", meta: "Downlights & switches" },
+    { quote: "Josh installed our EV charger and the quality of work was exceptional. We've had him back for extra power points and will keep using Coast Edge Electrical for all our needs. Highly recommend.", name: "Timothy King", meta: "EV charger install" },
+    { quote: "Josh was very professional and completed the jobs to a high standard. Refreshing to deal with a tradesperson who genuinely takes pride in their work. No hesitation recommending Coast Edge Electrical.", name: "Eidyn Williams", meta: "Renovation electrical" },
+    { quote: "Helpful, respectful, responsive and always punctual. Honest, hardworking and takes pride in his work. Completed everything professionally and on time — highly recommend.", name: "Rishi Rayamajhi", meta: "General electrical" },
+    { quote: "Josh is great at communication, professional and clean in his work, and an easy bloke to get along with. Will definitely keep using his services.", name: "Shane Wright", meta: "General electrical" },
+    { quote: "Josh was quick to respond and provided clean, excellent work when we had our air-con installed. Definitely will use his services again!", name: "Bailey McCoist", meta: "Air-con install" },
+    { quote: "Josh installed 10 cameras for us recently. Quick to quote, clean and tidy, and completed the work quickly. Would absolutely recommend!", name: "Connor Thomas", meta: "Security cameras" },
+    { quote: "Josh is always friendly, knowledgeable and efficient. Always great to deal with.", name: "Keiren Kennedy", meta: "General electrical" },
+    { quote: "Coast Edge has done a number of jobs for me — excellent work every time. Would highly recommend!", name: "Ayden Kelly", meta: "Repeat customer" }
   ];
 
   // service icon = sprite symbol id; form = value set in the "What do you need?" select
@@ -123,12 +126,9 @@
     for (var i = half; i < cards.length; i++) cards[i].setAttribute("aria-hidden", "true");
   }
   (function loadReviews() {
-    var isLocal = location.protocol === "file:" ||
-      /^(localhost|127\.|0\.0\.0\.0|::1|\[::1\])/.test(location.hostname);
-
     function fallback() {
-      // Never show the samples on the public site — local preview only.
-      renderReviewList(isLocal ? placeholderReviews.map(normalizeReview) : []);
+      // Real reviews (above) — shown whenever the live API isn't returning data.
+      renderReviewList(reviews.map(normalizeReview));
     }
 
     if (!REVIEWS_ENDPOINT) { fallback(); return; }
