@@ -230,10 +230,10 @@ h6.kicker {
   position: relative;
   display: flex;
   flex-direction: column;
-  /* Fill ~one screen below the nav (~92px) so the headline AND the reviews
-     that float at the bottom are both visible without scrolling. */
-  min-height: clamp(520px, calc(100vh - 92px), 940px);
-  min-height: clamp(520px, calc(100dvh - 92px), 940px);
+  /* Fill ~one screen below the nav + emergency bar (~126px) so the headline
+     AND the reviews floating at the bottom are visible without scrolling. */
+  min-height: clamp(520px, calc(100vh - 126px), 940px);
+  min-height: clamp(520px, calc(100dvh - 126px), 940px);
 }
 .hero-media { position: absolute; inset: 0; overflow: hidden; }
 
@@ -606,7 +606,7 @@ textarea.input { min-height: 96px; resize: vertical; }
 }
 @media (max-width: 860px) {
   .nav-links { display: none; }
-  .hero { min-height: clamp(480px, calc(100dvh - 88px), 780px); }
+  .hero { min-height: clamp(480px, calc(100dvh - 120px), 780px); }
   /* Portrait crop: show the electrician working, without a head-only close-up */
   .hero-bg { background-position: 56% center; }
   .hero h1 { font-size: 52px; }
@@ -654,16 +654,10 @@ textarea.input { min-height: 96px; resize: vertical; }
 .reveal-stagger.in-view > *:nth-child(8) { transition-delay: .49s; }
 .reveal-stagger.in-view > *:nth-child(9) { transition-delay: .56s; }
 
-/* Respect reduced-motion — stop the marquee & all entrance motion (prototype didn't) */
+/* Respect reduced-motion for entrance effects (the review marquee is JS-driven
+   so it keeps scrolling on iOS Reduce Motion / Low Power Mode). */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .marquee-track { animation: none; transform: none; }
-  .marquee {
-    overflow-x: auto;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
   .site-nav, .hero-content > *, .reviews, .hero-bg { animation: none !important; opacity: 1 !important; transform: none !important; }
   .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
-  * { transition-duration: 0.001ms !important; }
 }

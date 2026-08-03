@@ -101,12 +101,12 @@ export default async function handler(req, res) {
           "<p>Thanks for getting in touch with Coast Edge Electrical — we've received your enquiry" +
           (service ? " about <strong>" + esc(service) + "</strong>" : "") +
           " and will get back to you shortly.</p>" +
-          '<p>If it\'s urgent, call us on <a href="tel:0458858881">0458 858 881</a>.</p>' +
+          '<p>If it\'s urgent, call us on <a href="tel:0421165502">0421 165 502</a>.</p>' +
           "<p>Cheers,<br>Coast Edge Electrical<br>Joshua Aldous, Director</p>" +
           "</div>",
         text:
           "Hi " + name + ",\n\nThanks for getting in touch with Coast Edge Electrical — we've " +
-          "received your enquiry and will get back to you shortly. If it's urgent, call 0458 858 881.\n\n" +
+          "received your enquiry and will get back to you shortly. If it's urgent, call 0421 165 502.\n\n" +
           "Cheers,\nCoast Edge Electrical",
       });
     }

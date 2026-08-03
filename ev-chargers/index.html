@@ -19,9 +19,11 @@
     .ev::before{content:"";position:absolute;inset:0;background:linear-gradient(105deg,rgba(7,18,42,.9) 0%,rgba(9,26,66,.78) 44%,rgba(9,24,54,.4) 100%),url('/assets/ev-charger.jpg') center/cover no-repeat}
     .ev-main{flex:1;position:relative;z-index:2;display:flex;align-items:center}
     .ev-inner{width:100%;max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:40px;padding:32px 32px}
-    .ev-foot{display:flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:2;text-align:center;padding:6px 20px 22px;font-size:16px;font-weight:500;color:rgba(255,255,255,.85);text-decoration:none}
+    .ev-foot{display:flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:2;text-align:center;padding:6px 20px 10px;font-size:16px;font-weight:500;color:rgba(255,255,255,.85);text-decoration:none}
     .ev-foot .ico{font-size:19px;color:#8fc9fb}
     .ev-foot:hover{color:#fff}
+    .ev-legal{position:relative;z-index:2;text-align:center;padding:0 20px 20px;font-size:12.5px;color:rgba(255,255,255,.6)}
+    .ev-legal a{color:rgba(255,255,255,.75)}
     .ev-left{flex:1.05;display:flex;flex-direction:column}
     .ev-right{flex:.95;display:flex;align-items:center;justify-content:center}
     .ev-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:26px}
@@ -93,7 +95,7 @@
         <li><svg class="ico"><use href="#i-check"/></svg>Certified EV charger installers</li>
         <li><svg class="ico"><use href="#i-check"/></svg>Upfront fixed pricing — no surprises</li>
       </ul>
-      <a class="ev-phone" href="tel:0458858881"><svg class="ico"><use href="#i-phone"/></svg>0458 858 881</a>
+      <a class="ev-phone" href="tel:0421165502"><svg class="ico"><use href="#i-phone"/></svg>0421 165 502</a>
       <a class="ev-email" href="mailto:admin@coastedge.com.au"><svg class="ico"><use href="#i-mail"/></svg>admin@coastedge.com.au</a>
     </div>
 
@@ -107,28 +109,18 @@
             <div class="field"><label for="e-phone">Phone</label><input class="in" id="e-phone" name="phone" type="tel" placeholder="Mobile" autocomplete="tel" required><span class="err" data-err="phone"></span></div>
           </div>
           <div class="field"><label for="e-email">Email</label><input class="in" id="e-email" name="email" type="email" placeholder="you@email.com" autocomplete="email"><span class="err" data-err="email"></span></div>
-          <div class="row">
-            <div class="field"><label for="e-suburb">Suburb</label><input class="in" id="e-suburb" name="suburb" placeholder="e.g. Buderim" autocomplete="address-level2"></div>
-            <div class="field"><label for="e-charger">Charger type</label>
-              <select class="in" id="e-charger" name="charger">
-                <option>Not sure yet</option>
-                <option>Tesla Wall Connector</option>
-                <option>Universal 7kW</option>
-                <option>Three-phase 22kW</option>
-                <option>Business / fleet</option>
-              </select>
-            </div>
-          </div>
+          <div class="field"><label for="e-suburb">Suburb</label><input class="in" id="e-suburb" name="suburb" placeholder="e.g. Buderim" autocomplete="address-level2"></div>
           <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <p class="err" id="ev-status" role="status" aria-live="polite" style="text-align:center"></p>
           <button type="submit" class="btn"><svg class="ico"><use href="#i-bolt"/></svg>Get my free quote</button>
-          <p class="fine">Licensed QLD electrical contractor &middot; Caloundra to Noosa</p>
+          <p class="fine">Coast Edge Electrical Pty Ltd &middot; Lic No. 1511275 &middot; Sunshine Coast &amp; surrounds</p>
         </form>
       </div>
     </div>
   </div>
   </div>
   <a class="ev-foot" href="/"><svg class="ico"><use href="#i-bolt"/></svg>Need other electrical work? Visit our main site &rarr;</a>
+  <div class="ev-legal">Coast Edge Electrical Pty Ltd &middot; Lic No. 1511275 &middot; <a href="/privacy-policy">Privacy Policy</a></div>
 </main>
 
 <script>
@@ -147,9 +139,9 @@
     if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setErr("email","Check your email.");ok=false;}else setErr("email","");
     return ok;
   }
-  function collect(){return{name:form.elements.name.value.trim(),phone:form.elements.phone.value.trim(),email:form.elements.email.value.trim(),suburb:form.elements.suburb.value.trim(),service:"EV charger — "+form.elements.charger.value,message:"EV charger enquiry ("+form.elements.charger.value+")",company:form.elements.company.value};}
-  function success(){wrap.innerHTML='<div class="ev-card done"><svg class="ico"><use href="#i-check-circle"/></svg><h2>Thanks — we\'ve got it!</h2><p>We\'ll be in touch shortly about your EV charger. For anything urgent, call <a href="tel:0458858881">0458 858 881</a>.</p></div>';}
-  function mailto(d){var b="Name: "+d.name+"\nPhone: "+d.phone+"\nEmail: "+(d.email||"-")+"\nSuburb: "+(d.suburb||"-")+"\nCharger: "+form.elements.charger.value+"\n";window.location.href="mailto:"+OWNER+"?subject="+encodeURIComponent("EV charger quote — "+d.name)+"&body="+encodeURIComponent(b);success();}
+  function collect(){return{name:form.elements.name.value.trim(),phone:form.elements.phone.value.trim(),email:form.elements.email.value.trim(),suburb:form.elements.suburb.value.trim(),service:"EV charger",message:"EV charger enquiry",company:form.elements.company.value};}
+  function success(){wrap.innerHTML='<div class="ev-card done"><svg class="ico"><use href="#i-check-circle"/></svg><h2>Thanks — we\'ve got it!</h2><p>We\'ll be in touch shortly about your EV charger. For anything urgent, call <a href="tel:0421165502">0421 165 502</a>.</p></div>';}
+  function mailto(d){var b="Name: "+d.name+"\nPhone: "+d.phone+"\nEmail: "+(d.email||"-")+"\nSuburb: "+(d.suburb||"-")+"\n";window.location.href="mailto:"+OWNER+"?subject="+encodeURIComponent("EV charger quote — "+d.name)+"&body="+encodeURIComponent(b);success();}
   form.addEventListener("submit",function(e){
     e.preventDefault();statusEl.textContent="";
     if(!validate()){statusEl.textContent="Please fix the highlighted fields.";return;}

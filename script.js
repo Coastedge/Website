@@ -9,8 +9,8 @@
      CONFIG
      ---------------------------------------------------------- */
 
-  // Show the top announcement bar?  (README: showAnnouncementBar)
-  var SHOW_ANNOUNCEMENT_BAR = false;
+  // Show the top emergency-callout bar? (README: showAnnouncementBar)
+  var SHOW_ANNOUNCEMENT_BAR = true;
 
   // Where should quote enquiries go?
   //   • Leave as "" to use the built-in mailto fallback (opens the visitor's
@@ -52,7 +52,7 @@
     { icon: "i-bulb",   title: "Lighting design",         body: "Downlights, feature and outdoor lighting planned and installed to suit your space.", form: "Lighting installation" },
     { icon: "i-sun",    title: "Solar & battery",         body: "Cut your power bill with quality solar and battery systems, sized right for you.", form: "Solar & battery" },
     { icon: "i-car",    title: "EV chargers",             body: "Fast, safe home and workplace EV charger installation by certified installers.", form: "EV charger" },
-    { icon: "i-house",  title: "Smart home",              body: "Automate lighting, climate and security so your home works the way you live.", form: "Smart home automation" },
+    { icon: "i-siren",  title: "Emergency callouts",      body: "Power out, sparking or something not right? Call any time — we'll get you safe and back on fast.", form: "Emergency callout" },
     { icon: "i-wifi",   title: "Data & networking",       body: "Reliable data cabling, Wi-Fi and networking for home offices and businesses.", form: "Data & networking" },
     { icon: "i-shield-check", title: "Safety inspections", body: "Compliance checks and safety reports for homes, rentals and commercial sites.", form: "Safety inspection" },
     { icon: "i-hammer", title: "Renovations & rewiring",  body: "Rewiring, extensions and new builds — from first-fix planning to final fit-off.", form: "Renovations & rewiring" }
@@ -124,6 +124,33 @@
     // Duplicated clones are decorative — hide them from screen readers.
     var half = list.length, cards = track.children;
     for (var i = half; i < cards.length; i++) cards[i].setAttribute("aria-hidden", "true");
+    startMarquee(track);
+  }
+  // JS-driven marquee: CSS animations freeze on iOS with Reduce Motion /
+  // Low Power Mode, so drive the scroll with requestAnimationFrame instead.
+  function startMarquee(track) {
+    track.style.animation = "none";
+    var x = 0, last = null, paused = false;
+    var marquee = track.parentElement;
+    if (marquee) {
+      marquee.addEventListener("mouseenter", function () { paused = true; });
+      marquee.addEventListener("mouseleave", function () { paused = false; });
+    }
+    function step(ts) {
+      if (last === null) last = ts;
+      var dt = Math.min((ts - last) / 1000, 0.1); // clamp tab-switch jumps
+      last = ts;
+      if (!paused) {
+        var half = track.scrollWidth / 2;
+        if (half > 0) {
+          x -= (half / 46) * dt; // full loop every 46s, same as the CSS version
+          if (-x >= half) x += half;
+          track.style.transform = "translateX(" + x + "px)";
+        }
+      }
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
   (function loadReviews() {
     function fallback() {
@@ -286,7 +313,7 @@
           '<div class="success-ico">' + icon("i-check-circle", "ico ico-fill") + '</div>' +
           '<h3>Thanks — message received!</h3>' +
           '<p>We&rsquo;ll be in touch shortly. For anything urgent, call us on ' +
-            '<a href="tel:0458858881">0458 858 881</a>.</p>' +
+            '<a href="tel:0421165502">0421 165 502</a>.</p>' +
         '</div>';
     }
 
