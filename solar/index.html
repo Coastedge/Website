@@ -163,7 +163,7 @@
     var btn=form.querySelector(".btn");btn.disabled=true;var h=btn.innerHTML;btn.textContent="Sending…";
     fetch("/api/contact",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(data)})
       .then(function(r){if(!r.ok)throw 0;success();})
-      .catch(function(){btn.disabled=false;btn.innerHTML=h;mailto(data);});
+      .catch(function(){btn.disabled=false;btn.innerHTML=h;statusEl.textContent="Sorry — that didn't go through. Please call 0421 165 502 or email admin@coastedge.com.au.";});
   });
 })();
 </script>

@@ -1,14 +1,17 @@
 // Serverless function: POST /api/contact
-// Sends the quote-form enquiry FROM the Coast Edge domain via Resend
-// (https://resend.com) — reliable transactional email, no Google app password
-// needed. Also sends the customer an automatic "we've got it" reply when they
-// leave an email. Runs on Vercel/Netlify. Zero npm dependencies (uses fetch).
+// Emails the quote-form enquiry to the business inbox via Resend
+// (https://resend.com). Internal notification only — no customer-facing reply,
+// so a verified domain is nice-to-have, not required. reply_to is the customer's
+// email so Josh can reply straight back. Zero npm dependencies (uses fetch).
 //
-// Required environment variables (set in the hosting dashboard):
-//   RESEND_API_KEY  — API key from resend.com (after verifying coastedge.com.au)
-//   CONTACT_TO      — (optional) where enquiries land; default admin@coastedge.com.au
-//   CONTACT_FROM    — (optional) verified sender; default below. MUST be on the
-//                     verified domain (e.g. noreply@coastedge.com.au).
+// Environment variables (set in the Vercel dashboard):
+//   RESEND_API_KEY  — required. API key from resend.com.
+//   CONTACT_TO      — where enquiries land. Default admin@coastedge.com.au.
+//   CONTACT_FROM    — the sender. Default "Coast Edge Electrical <onboarding@resend.dev>"
+//                     which works WITHOUT verifying a domain (but can only send to
+//                     the Resend account's own email, so CONTACT_TO must match the
+//                     signup email). Once coastedge.com.au is verified in Resend,
+//                     set this to e.g. "Coast Edge <noreply@coastedge.com.au>".
 
 function esc(s) {
   return String(s == null ? "" : s).replace(/[<>&]/g, function (c) {
@@ -24,7 +27,7 @@ export default async function handler(req, res) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO || "admin@coastedge.com.au";
-  const from = process.env.CONTACT_FROM || "Coast Edge Electrical <noreply@coastedge.com.au>";
+  const from = process.env.CONTACT_FROM || "Coast Edge Electrical <onboarding@resend.dev>";
   if (!apiKey) {
     return res.status(500).json({ ok: false, error: "Email not configured yet" });
   }
@@ -89,27 +92,8 @@ export default async function handler(req, res) {
       text: adminText,
     });
 
-    // 2) Auto-reply → customer (only when they left an email)
-    if (email) {
-      await sendEmail({
-        from: from,
-        to: [email],
-        subject: "Thanks — we've got your enquiry",
-        html:
-          '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#0c1c3d;line-height:1.5">' +
-          "<p>Hi " + esc(name) + ",</p>" +
-          "<p>Thanks for getting in touch with Coast Edge Electrical — we've received your enquiry" +
-          (service ? " about <strong>" + esc(service) + "</strong>" : "") +
-          " and will get back to you shortly.</p>" +
-          '<p>If it\'s urgent, call us on <a href="tel:0421165502">0421 165 502</a>.</p>' +
-          "<p>Cheers,<br>Coast Edge Electrical<br>Joshua Aldous, Director</p>" +
-          "</div>",
-        text:
-          "Hi " + name + ",\n\nThanks for getting in touch with Coast Edge Electrical — we've " +
-          "received your enquiry and will get back to you shortly. If it's urgent, call 0421 165 502.\n\n" +
-          "Cheers,\nCoast Edge Electrical",
-      });
-    }
+    // No customer auto-reply — enquiries go to the business inbox only. Josh
+    // can hit reply (reply_to is the customer's email) to respond directly.
 
     return res.status(200).json({ ok: true });
   } catch (err) {

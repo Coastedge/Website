@@ -362,11 +362,11 @@
           showSuccess();
         })
         .catch(function () {
-          // Backend not configured yet (or a transient error) → don't show a
-          // broken state; fall back to the visitor's email app so the lead still lands.
+          // Real send failed — never fake a success (a lost lead is worse than
+          // an honest error). Tell them how to reach us directly.
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalHTML;
-          mailtoFallback(data);
+          showStatus("Sorry — that didn't go through. Please call 0421 165 502 or email admin@coastedge.com.au.", true);
         });
     });
   })();
