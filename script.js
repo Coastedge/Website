@@ -79,9 +79,14 @@
     var bar = el("announce");
     if (!bar) return;
     if (!SHOW_ANNOUNCEMENT_BAR) { bar.remove(); return; }
-    // Whole bar opens the emergency popup (openEmergency is hoisted from below).
-    bar.addEventListener("click", function (e) { e.preventDefault(); openEmergency(); });
+    // Whole bar opens the emergency popup — EXCEPT the phone-number link, which
+    // dials directly. (openEmergency is hoisted from below.)
+    bar.addEventListener("click", function (e) {
+      if (e.target.closest('a[href^="tel:"]')) return;
+      e.preventDefault(); openEmergency();
+    });
     bar.addEventListener("keydown", function (e) {
+      if (e.target.closest('a[href^="tel:"]')) return;
       if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") { e.preventDefault(); openEmergency(); }
     });
   })();
