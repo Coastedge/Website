@@ -52,7 +52,7 @@
     { icon: "i-bulb",   title: "Lighting design",         body: "Downlights, feature and outdoor lighting planned and installed to suit your space.", form: "Lighting installation" },
     { icon: "i-sun",    title: "Solar & battery",         body: "Cut your power bill with quality solar and battery systems, sized right for you.", form: "Solar & battery" },
     { icon: "i-car",    title: "EV chargers",             body: "Fast, safe home and workplace EV charger installation by certified installers.", form: "EV charger" },
-    { icon: "i-siren",  title: "Emergency callouts",      body: "Power out, sparking or something not right? Call any time — we'll get you safe and back on fast.", form: "Emergency callout" },
+    { icon: "i-siren",  title: "Emergency callouts",      body: "Power out, sparking or something not right? Call any time — we'll get you safe and back on fast.", form: "Emergency callout", emergency: true },
     { icon: "i-wifi",   title: "Data & networking",       body: "Reliable data cabling, Wi-Fi and networking for home offices and businesses.", form: "Data & networking" },
     { icon: "i-shield-check", title: "Safety inspections", body: "Compliance checks and safety reports for homes, rentals and commercial sites.", form: "Safety inspection" },
     { icon: "i-hammer", title: "Renovations & rewiring",  body: "Rewiring, extensions and new builds — from first-fix planning to final fit-off.", form: "Renovations & rewiring" }
@@ -214,32 +214,71 @@
     selectService(value);
     scrollToContact();
   }
+
+  /* Emergency popup — the Emergency callouts card opens this instead of the quote form. */
+  var emgModal = null;
+  function emgKey(e) { if (e.key === "Escape") closeEmergency(); }
+  function closeEmergency() {
+    if (emgModal) emgModal.classList.remove("open");
+    document.body.style.overflow = "";
+    document.removeEventListener("keydown", emgKey);
+  }
+  function openEmergency() {
+    if (!emgModal) {
+      emgModal = document.createElement("div");
+      emgModal.className = "emg-overlay";
+      emgModal.setAttribute("role", "dialog");
+      emgModal.setAttribute("aria-modal", "true");
+      emgModal.setAttribute("aria-label", "24/7 emergency callouts");
+      emgModal.innerHTML =
+        '<div class="emg-card">' +
+          '<button class="emg-close" type="button" aria-label="Close">' + icon("i-x", "ico") + '</button>' +
+          '<div class="emg-ico">' + icon("i-siren", "ico") + '</div>' +
+          '<h3>24/7 emergency callouts</h3>' +
+          '<p>Power out, sparking, or something not right? Call us any time — we&rsquo;ll get you safe and sorted, fast.</p>' +
+          '<a class="emg-call" href="tel:0421165502">' + icon("i-phone", "ico") + 'Call 0421 165 502</a>' +
+        '</div>';
+      document.body.appendChild(emgModal);
+      emgModal.addEventListener("click", function (e) { if (e.target === emgModal) closeEmergency(); });
+      emgModal.querySelector(".emg-close").addEventListener("click", closeEmergency);
+    }
+    emgModal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", emgKey);
+  }
+  function activateCard(card) {
+    if (card.getAttribute("data-emergency")) openEmergency();
+    else pickService(card.getAttribute("data-service"));
+  }
+
   (function renderServices() {
     var grid = el("services-grid");
     if (!grid) return;
     grid.innerHTML = services.map(function (s) {
+      var emg = s.emergency;
       return (
-        '<div class="card svc" role="button" tabindex="0" data-service="' + esc(s.form) + '" ' +
-             'aria-label="Get a quote for ' + esc(s.title) + '">' +
+        '<div class="card svc" role="button" tabindex="0" data-service="' + esc(s.form) + '"' +
+             (emg ? ' data-emergency="1"' : '') +
+             ' aria-label="' + (emg ? "Emergency callouts — call any time" : "Get a quote for " + esc(s.title)) + '">' +
           '<div class="svc-head">' +
             icon(s.icon, "ico svc-ic") +
-            icon("i-arrow-ur", "ico svc-arrow") +
+            icon(emg ? "i-phone" : "i-arrow-ur", "ico svc-arrow") +
           '</div>' +
           '<div class="card-title">' + esc(s.title) + '</div>' +
           '<p class="card-body">' + esc(s.body) + '</p>' +
-          '<span class="svc-link">Get a quote for this &rarr;</span>' +
+          '<span class="svc-link">' + (emg ? "Call us any time &rarr;" : "Get a quote for this &rarr;") + '</span>' +
         '</div>'
       );
     }).join("");
 
     grid.addEventListener("click", function (e) {
       var card = e.target.closest(".svc");
-      if (card) pickService(card.getAttribute("data-service"));
+      if (card) activateCard(card);
     });
     grid.addEventListener("keydown", function (e) {
       if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
       var card = e.target.closest(".svc");
-      if (card) { e.preventDefault(); pickService(card.getAttribute("data-service")); }
+      if (card) { e.preventDefault(); activateCard(card); }
     });
   })();
 
