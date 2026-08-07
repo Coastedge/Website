@@ -168,38 +168,57 @@ h6.kicker {
 .card-body { font-size: 15.5px; color: var(--color-neutral-400); line-height: 1.55; margin-top: 2px; }
 
 /* ============================================================
-   Announcement bar
+   Sticky top: emergency bar + nav
    ============================================================ */
+.topbar { position: sticky; top: 0; z-index: 30; }
+
 .announce {
-  background: var(--color-accent-900);
-  border-bottom: 1px solid var(--color-divider);
-  font-size: 13px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: background-color .15s ease;
 }
+.announce:hover { background: var(--color-accent-300); }
 .announce .wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  color: var(--color-accent-200);
+  gap: 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #fff;
   text-align: center;
+  flex-wrap: wrap;
 }
-.announce .ico { color: var(--color-accent); font-size: 16px; }
-.announce a {
-  color: var(--color-accent-100);
-  text-decoration: none;
+.announce .ico { color: #fff; font-size: 17px; }
+.announce strong { font-weight: 600; }
+.announce-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
   font-weight: 600;
+  padding: 5px 13px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.14);
   white-space: nowrap;
+}
+.announce-pill .ico { font-size: 15px; }
+.ann-sm { display: none; }
+@media (max-width: 620px) {
+  .ann-lg, .announce-pill { display: none; }
+  .ann-sm { display: inline; }
+  .announce .wrap { gap: 8px; }
 }
 
 /* ============================================================
    Nav
    ============================================================ */
 .site-nav {
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  position: relative;
+  z-index: 1;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   background: color-mix(in srgb, var(--color-bg) 82%, transparent);
@@ -464,6 +483,25 @@ h6.kicker {
   color: var(--color-accent-300);
   margin-top: 0;
 }
+
+/* Distinct "Emergency callouts" card (opens the call popup, not the form) */
+.svc-emg { background: #e9f3fd; box-shadow: 0 0 0 1.5px var(--color-accent); }
+.svc-emg .svc-ic { color: var(--color-accent); }
+.svc-emg:hover, .svc-emg:focus-visible {
+  box-shadow: 0 0 0 1.5px var(--color-accent), 0 12px 30px rgba(10, 30, 80, 0.16);
+  transform: translateY(-2px);
+}
+.svc-badge {
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.svc-link-emg { display: inline-flex; align-items: center; gap: 6px; }
+.svc-link-emg .ico { font-size: 15px; }
 
 /* ============================================================
    Contact

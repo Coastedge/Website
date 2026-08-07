@@ -47,12 +47,12 @@
 
   // service icon = sprite symbol id; form = value set in the "What do you need?" select
   var services = [
+    { icon: "i-siren",  title: "Emergency callouts",      body: "Power out, sparking or something not right? Call us any time — we'll get you safe and back on fast.", form: "Emergency callout", emergency: true },
     { icon: "i-wrench", title: "General repairs",         body: "Faults, power points, safety switches and those niggling jobs on the to-do list.", form: "General electrical repairs" },
     { icon: "i-zap",    title: "Switchboard upgrades",    body: "Modern boards with safety switches to protect your home and meet current standards.", form: "Switchboard upgrade" },
     { icon: "i-bulb",   title: "Lighting design",         body: "Downlights, feature and outdoor lighting planned and installed to suit your space.", form: "Lighting installation" },
     { icon: "i-sun",    title: "Solar & battery",         body: "Cut your power bill with quality solar and battery systems, sized right for you.", form: "Solar & battery" },
     { icon: "i-car",    title: "EV chargers",             body: "Fast, safe home and workplace EV charger installation by certified installers.", form: "EV charger" },
-    { icon: "i-siren",  title: "Emergency callouts",      body: "Power out, sparking or something not right? Call any time — we'll get you safe and back on fast.", form: "Emergency callout", emergency: true },
     { icon: "i-wifi",   title: "Data & networking",       body: "Reliable data cabling, Wi-Fi and networking for home offices and businesses.", form: "Data & networking" },
     { icon: "i-shield-check", title: "Safety inspections", body: "Compliance checks and safety reports for homes, rentals and commercial sites.", form: "Safety inspection" },
     { icon: "i-hammer", title: "Renovations & rewiring",  body: "Rewiring, extensions and new builds — from first-fix planning to final fit-off.", form: "Renovations & rewiring" }
@@ -75,10 +75,16 @@
   /* ----------------------------------------------------------
      ANNOUNCEMENT BAR
      ---------------------------------------------------------- */
-  if (!SHOW_ANNOUNCEMENT_BAR) {
+  (function setupAnnounceBar() {
     var bar = el("announce");
-    if (bar) bar.remove();
-  }
+    if (!bar) return;
+    if (!SHOW_ANNOUNCEMENT_BAR) { bar.remove(); return; }
+    // Whole bar opens the emergency popup (openEmergency is hoisted from below).
+    bar.addEventListener("click", function (e) { e.preventDefault(); openEmergency(); });
+    bar.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") { e.preventDefault(); openEmergency(); }
+    });
+  })();
 
   /* ----------------------------------------------------------
      REVIEWS MARQUEE  (data duplicated so the -50% loop is seamless)
@@ -257,16 +263,18 @@
     grid.innerHTML = services.map(function (s) {
       var emg = s.emergency;
       return (
-        '<div class="card svc" role="button" tabindex="0" data-service="' + esc(s.form) + '"' +
+        '<div class="card svc' + (emg ? ' svc-emg' : '') + '" role="button" tabindex="0" data-service="' + esc(s.form) + '"' +
              (emg ? ' data-emergency="1"' : '') +
              ' aria-label="' + (emg ? "Emergency callouts — call any time" : "Get a quote for " + esc(s.title)) + '">' +
           '<div class="svc-head">' +
             icon(s.icon, "ico svc-ic") +
-            icon(emg ? "i-phone" : "i-arrow-ur", "ico svc-arrow") +
+            (emg ? '<span class="svc-badge">24/7</span>' : icon("i-arrow-ur", "ico svc-arrow")) +
           '</div>' +
           '<div class="card-title">' + esc(s.title) + '</div>' +
           '<p class="card-body">' + esc(s.body) + '</p>' +
-          '<span class="svc-link">' + (emg ? "Call us any time &rarr;" : "Get a quote for this &rarr;") + '</span>' +
+          '<span class="svc-link' + (emg ? ' svc-link-emg' : '') + '">' +
+            (emg ? icon("i-phone", "ico") + 'Call 0421 165 502 &rarr;' : 'Get a quote for this &rarr;') +
+          '</span>' +
         '</div>'
       );
     }).join("");

@@ -80,19 +80,18 @@
 </svg>
 
 <!-- ============================================================
-     Announcement bar  (toggle via data-announce on <body>, or JS flag)
+     Sticky top: emergency bar + nav (both lock to the top on scroll)
      ============================================================ -->
-<div class="announce" id="announce">
+<div class="topbar">
+<div class="announce" id="announce" role="button" tabindex="0" aria-label="24/7 emergency callouts — call 0421 165 502">
   <div class="wrap">
     <svg class="ico"><use href="#i-siren"/></svg>
-    <span><strong>Emergency callouts</strong> &middot; power out or something not right? We answer any time.</span>
-    <a href="tel:0421165502">Call 0421 165 502 &rarr;</a>
+    <span class="ann-lg"><strong>24/7 emergency callouts</strong> &mdash; power out or something not right?</span>
+    <span class="ann-sm"><strong>24/7 emergencies</strong> &mdash; tap to call</span>
+    <span class="announce-pill"><svg class="ico"><use href="#i-phone"/></svg>Call 0421 165 502</span>
   </div>
 </div>
 
-<!-- ============================================================
-     Nav
-     ============================================================ -->
 <header class="site-nav">
   <nav class="wrap" aria-label="Primary">
     <a href="#" class="logo" aria-label="Coast Edge Electrical — home">
@@ -108,6 +107,7 @@
     </a>
   </nav>
 </header>
+</div><!-- /topbar -->
 
 <!-- ============================================================
      Hero
