@@ -56,6 +56,9 @@
     .btn{width:100%;background:#2f8fdd;color:#fff;font:inherit;font-weight:600;font-size:16px;border:none;border-radius:9px;padding:15px;margin-top:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
     .btn:hover{background:#124a97}
     .fine{font-size:11.5px;color:#56637d;text-align:center;margin-top:10px}
+    .ev-install{margin:14px 0 2px;padding:14px;border-radius:12px;background:#eef6fd;border:1px solid #cfe6fb}
+    .ev-install-cap{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#124a97;margin-bottom:10px}
+    .ev-install-cap .ico{font-size:15px;color:#2f8fdd}
     .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
     .done{text-align:center;padding:18px 6px}
     .done .ico{font-size:46px;color:#2f8fdd}
@@ -110,6 +113,18 @@
           </div>
           <div class="field"><label for="e-email">Email</label><input class="in" id="e-email" name="email" type="email" placeholder="you@email.com" autocomplete="email"><span class="err" data-err="email"></span></div>
           <div class="field"><label for="e-suburb">Suburb</label><input class="in" id="e-suburb" name="suburb" placeholder="e.g. Buderim" autocomplete="address-level2"></div>
+          <div class="ev-install">
+            <div class="ev-install-cap"><svg class="ico"><use href="#i-bolt"/></svg>About the install</div>
+            <div class="field"><label for="e-storey">Is your home single or multi-storey?</label>
+              <select class="in" id="e-storey" name="storey"><option>Not sure</option><option>Single storey</option><option>Multi-storey</option></select>
+            </div>
+            <div class="field"><label for="e-distance">Rough distance from switchboard to charger spot?</label>
+              <select class="in" id="e-distance" name="distance"><option>Not sure</option><option>Under 5 m</option><option>5&ndash;15 m</option><option>15&ndash;30 m</option><option>Over 30 m</option></select>
+            </div>
+            <div class="field" style="margin-bottom:0"><label for="e-phase">Power supply?</label>
+              <select class="in" id="e-phase" name="phase"><option>Not sure</option><option>Single phase</option><option>Three phase</option></select>
+            </div>
+          </div>
           <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
           <p class="err" id="ev-status" role="status" aria-live="polite" style="text-align:center"></p>
           <button type="submit" class="btn"><svg class="ico"><use href="#i-bolt"/></svg>Get my free quote</button>
@@ -139,9 +154,9 @@
     if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){setErr("email","Check your email.");ok=false;}else setErr("email","");
     return ok;
   }
-  function collect(){return{name:form.elements.name.value.trim(),phone:form.elements.phone.value.trim(),email:form.elements.email.value.trim(),suburb:form.elements.suburb.value.trim(),service:"EV charger",message:"EV charger enquiry",company:form.elements.company.value};}
+  function collect(){return{name:form.elements.name.value.trim(),phone:form.elements.phone.value.trim(),email:form.elements.email.value.trim(),suburb:form.elements.suburb.value.trim(),service:"EV charger",message:"EV charger enquiry\nHome: "+form.elements.storey.value+"\nDistance (switchboard to charger): "+form.elements.distance.value+"\nPower supply: "+form.elements.phase.value,company:form.elements.company.value};}
   function success(){wrap.innerHTML='<div class="ev-card done"><svg class="ico"><use href="#i-check-circle"/></svg><h2>Thanks — we\'ve got it!</h2><p>We\'ll be in touch shortly about your EV charger. For anything urgent, call <a href="tel:0421165502">0421 165 502</a>.</p></div>';}
-  function mailto(d){var b="Name: "+d.name+"\nPhone: "+d.phone+"\nEmail: "+(d.email||"-")+"\nSuburb: "+(d.suburb||"-")+"\n";window.location.href="mailto:"+OWNER+"?subject="+encodeURIComponent("EV charger quote — "+d.name)+"&body="+encodeURIComponent(b);success();}
+  function mailto(d){var b="Name: "+d.name+"\nPhone: "+d.phone+"\nEmail: "+(d.email||"-")+"\nSuburb: "+(d.suburb||"-")+"\n\n"+d.message+"\n";window.location.href="mailto:"+OWNER+"?subject="+encodeURIComponent("EV charger quote — "+d.name)+"&body="+encodeURIComponent(b);success();}
   form.addEventListener("submit",function(e){
     e.preventDefault();statusEl.textContent="";
     if(!validate()){statusEl.textContent="Please fix the highlighted fields.";return;}
